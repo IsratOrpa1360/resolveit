@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Every signed-in page is private and rendered per request, so page caching is off.
+  experimental: {
+    // Vercel rejects request bodies above 4.5 MB; files are limited to 3 MB.
+    serverActions: { bodySizeLimit: "4mb" },
+  },
 };
 
 export default nextConfig;

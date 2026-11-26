@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ResolveIT",
+  title: { default: "ResolveIT", template: "%s | ResolveIT" },
   description: "Smart issue and complaint management system",
 };
 
