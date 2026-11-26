@@ -20,7 +20,7 @@ export default async function NewTicketPage({
   const { error } = await searchParams;
 
   return (
-    <main className="content stack">
+    <>
       <Link href="/dashboard" className="link">← Back to dashboard</Link>
       <h1>New ticket</h1>
 
@@ -62,6 +62,6 @@ export default async function NewTicketPage({
           <button className="button">Create ticket</button>
         </form>
       </div>
-    </main>
+    </>
   );
 }

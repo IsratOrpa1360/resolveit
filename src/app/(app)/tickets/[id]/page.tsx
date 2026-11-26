@@ -23,7 +23,7 @@ export default async function TicketPage({
   if (!ticket) notFound();
 
   return (
-    <main className="content stack">
+    <>
       <Link href="/dashboard" className="link">← Back to dashboard</Link>
       <h1>{ticket.title}</h1>
 
@@ -37,6 +37,6 @@ export default async function TicketPage({
           Category: {ticket.category} · Created: {new Date(ticket.created_at).toLocaleString()}
         </p>
       </div>
-    </main>
+    </>
   );
 }
