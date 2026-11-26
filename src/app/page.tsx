@@ -1,11 +1,17 @@
+import styles from "./page.module.css";
+
 export default function Home() {
   return (
-    <main>
-      <h1>ResolveIT</h1>
+    <div>
+      <header className={styles.navbar}>
+        <strong>ResolveIT</strong>
+        <a href="/login">Log in</a>
+      </header>
 
-      <p>Report problems. Get them resolved.</p>
-
-      <a href="/login">Log in</a>
-    </main>
+      <main className={styles.content}>
+        <h1>Report problems. Get them resolved.</h1>
+        <p>Submit an issue and track its progress.</p>
+      </main>
+    </div>
   );
 }
