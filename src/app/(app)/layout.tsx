@@ -12,6 +12,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   if (profile.role === "student") {
     links.push({ href: "/tickets/new", text: "New ticket" });
   }
+  if (profile.role === "admin") {
+    links.push({ href: "/admin/users", text: "Users" });
+  }
 
   return (
     <div className="shell">

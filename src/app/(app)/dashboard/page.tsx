@@ -9,7 +9,8 @@ export default async function DashboardPage() {
   // RLS returns only the tickets this user is allowed to see.
   const { data } = await supabase
     .from("tickets")
-    .select("id, title, category, priority, status, created_at")
+    // Also read the name of who submitted it, from profiles (shown to admins).
+    .select("id, title, category, priority, status, created_at, owner:profiles!tickets_user_id_fkey(full_name)")
     .order("created_at", { ascending: false });
   const tickets = data ?? [];
 
@@ -18,7 +19,7 @@ export default async function DashboardPage() {
       <div className="page-header">
         <div>
           <h1>Welcome, {profile.full_name}</h1>
-          <p className="muted">Here is what is happening with your tickets.</p>
+          <p className="muted">Here is what is happening with the tickets you can see.</p>
         </div>
         {profile.role === "student" && (
           <Link href="/tickets/new" className="button">New ticket</Link>
@@ -37,7 +38,9 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-      <h2>My tickets</h2>
+      <h2>
+        {profile.role === "admin" ? "All tickets" : profile.role === "agent" ? "Tickets assigned to me" : "My tickets"}
+      </h2>
 
       {tickets.length === 0 ? (
         <div className="card empty">
@@ -50,6 +53,7 @@ export default async function DashboardPage() {
             <thead>
               <tr>
                 <th>Title</th>
+                {profile.role === "admin" && <th>Submitted by</th>}
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Status</th>
@@ -60,6 +64,9 @@ export default async function DashboardPage() {
               {tickets.map((ticket) => (
                 <tr key={ticket.id}>
                   <td><Link href={`/tickets/${ticket.id}`} className="link">{ticket.title}</Link></td>
+                  {profile.role === "admin" && (
+                    <td>{(ticket.owner as unknown as { full_name: string } | null)?.full_name}</td>
+                  )}
                   <td>{ticket.category}</td>
                   <td><span className={`badge ${ticket.priority}`}>{ticket.priority}</span></td>
                   <td><span className={`badge ${ticket.status}`}>{ticket.status.replace("_", " ")}</span></td>
