@@ -1,6 +1,20 @@
 import Link from "next/link";
+import { register } from "../auth-actions";
 
-export default function RegisterPage() {
+const errors: Record<string, string> = {
+  name: "Enter your full name (up to 100 characters).",
+  email: "Enter a valid email address.",
+  password: "Use at least 8 characters for your password.",
+  failed: "Could not create the account. Try a different email or try again later.",
+};
+
+export default async function RegisterPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
   return (
     <main className="auth">
       <Link href="/" className="brand">ResolveIT</Link>
@@ -8,11 +22,12 @@ export default function RegisterPage() {
       <div className="card">
         <h1>Create account</h1>
 
-        {/* method="post" keeps the password out of the address bar */}
-        <form className="form" method="post">
+        {error && errors[error] && <p className="message error">{errors[error]}</p>}
+
+        <form className="form" action={register}>
           <label>
             Full name
-            <input name="full_name" type="text" required />
+            <input name="full_name" type="text" required maxLength={100} />
           </label>
 
           <label>
